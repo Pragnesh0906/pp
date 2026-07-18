@@ -1,0 +1,1283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Pragnesh Vaghela — Personal Space</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #080b0f;
+    --bg2: #0e1318;
+    --bg3: #141b22;
+    --border: #1e2a36;
+    --gold: #c8a96e;
+    --gold2: #e8c98a;
+    --gold-dim: rgba(200,169,110,0.12);
+    --text: #e8e0d5;
+    --text2: #8a9aaa;
+    --text3: #4a5a6a;
+    --accent: #3a7bd5;
+    --danger: #c0392b;
+    --success: #27ae60;
+    --archive: #7f8c8d;
+    --radius: 4px;
+    --radius-lg: 12px;
+    --shadow: 0 4px 32px rgba(0,0,0,0.5);
+    --transition: 0.22s cubic-bezier(0.4,0,0.2,1);
+  }
+
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* ——— SCROLLBAR ——— */
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: var(--bg2); }
+  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+  /* ——— TOPBAR ——— */
+  #topbar {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 999;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 40px;
+    height: 64px;
+    background: rgba(8,11,15,0.92);
+    backdrop-filter: blur(18px);
+    border-bottom: 1px solid var(--border);
+  }
+  .logo {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--gold);
+    letter-spacing: 0.04em;
+    cursor: pointer;
+  }
+  .logo span { color: var(--text2); font-weight: 300; }
+  nav { display: flex; gap: 4px; }
+  nav button {
+    background: none; border: none; cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.8rem;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text2);
+    padding: 8px 16px;
+    border-radius: var(--radius);
+    transition: var(--transition);
+  }
+  nav button:hover { color: var(--gold); background: var(--gold-dim); }
+  nav button.active { color: var(--gold); background: var(--gold-dim); }
+
+  /* ——— PAGES ——— */
+  .page { display: none; padding-top: 64px; min-height: 100vh; }
+  .page.active { display: block; }
+
+  /* ——— HERO ——— */
+  #hero {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    overflow: hidden;
+  }
+  .hero-bg {
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(ellipse 80% 60% at 70% 40%, rgba(200,169,110,0.06) 0%, transparent 70%),
+      radial-gradient(ellipse 50% 40% at 20% 80%, rgba(58,123,213,0.05) 0%, transparent 60%),
+      linear-gradient(160deg, #080b0f 0%, #0e1318 50%, #080b0f 100%);
+  }
+  .hero-grid {
+    position: absolute; inset: 0;
+    background-image: linear-gradient(rgba(30,42,54,0.25) 1px, transparent 1px),
+                      linear-gradient(90deg, rgba(30,42,54,0.25) 1px, transparent 1px);
+    background-size: 60px 60px;
+    mask-image: radial-gradient(ellipse 70% 70% at 50% 50%, black 40%, transparent 100%);
+  }
+  .hero-content {
+    position: relative; z-index: 2;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 80px 40px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: center;
+  }
+  .hero-left { animation: fadeSlideUp 0.9s ease both; }
+  .hero-tag {
+    display: inline-block;
+    font-size: 0.72rem;
+    font-weight: 500;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--gold);
+    border: 1px solid rgba(200,169,110,0.3);
+    padding: 5px 14px;
+    border-radius: 2px;
+    margin-bottom: 28px;
+  }
+  .hero-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(3rem, 6vw, 5.5rem);
+    font-weight: 700;
+    line-height: 0.95;
+    color: var(--text);
+    margin-bottom: 24px;
+  }
+  .hero-name em { color: var(--gold); font-style: italic; display: block; }
+  .hero-bio {
+    font-size: 0.95rem;
+    font-weight: 300;
+    line-height: 1.8;
+    color: var(--text2);
+    margin-bottom: 36px;
+    max-width: 420px;
+  }
+  .hero-stats {
+    display: flex; gap: 32px;
+  }
+  .stat-item { text-align: left; }
+  .stat-num {
+    font-family: 'DM Mono', monospace;
+    font-size: 1.8rem;
+    color: var(--gold);
+    font-weight: 500;
+    line-height: 1;
+  }
+  .stat-label {
+    font-size: 0.7rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text3);
+    margin-top: 4px;
+  }
+  .hero-right { animation: fadeSlideUp 0.9s 0.15s ease both; }
+  .profile-card {
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 36px;
+    position: relative;
+    overflow: hidden;
+  }
+  .profile-card::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--gold), transparent);
+  }
+  .profile-avatar {
+    width: 80px; height: 80px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--gold-dim), rgba(58,123,213,0.12));
+    border: 2px solid var(--gold);
+    display: flex; align-items: center; justify-content: center;
+    margin-bottom: 20px;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--gold);
+  }
+  .profile-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.6rem;
+    font-weight: 600;
+    margin-bottom: 6px;
+  }
+  .profile-title { font-size: 0.82rem; color: var(--gold); letter-spacing: 0.08em; margin-bottom: 20px; }
+  .profile-divider { height: 1px; background: var(--border); margin: 20px 0; }
+  .profile-detail {
+    display: flex; align-items: center; gap: 10px;
+    font-size: 0.82rem; color: var(--text2);
+    margin-bottom: 10px;
+  }
+  .profile-detail-dot {
+    width: 5px; height: 5px;
+    border-radius: 50%;
+    background: var(--gold);
+    flex-shrink: 0;
+  }
+  .hero-cta { display: flex; gap: 12px; margin-top: 32px; }
+  .btn-primary {
+    background: var(--gold);
+    color: #080b0f;
+    border: none;
+    padding: 12px 28px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.82rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    border-radius: var(--radius);
+    cursor: pointer;
+    transition: var(--transition);
+  }
+  .btn-primary:hover { background: var(--gold2); transform: translateY(-1px); }
+  .btn-outline {
+    background: transparent;
+    color: var(--text2);
+    border: 1px solid var(--border);
+    padding: 12px 28px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.82rem;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    border-radius: var(--radius);
+    cursor: pointer;
+    transition: var(--transition);
+  }
+  .btn-outline:hover { border-color: var(--gold); color: var(--gold); }
+
+  /* ——— SECTION COMMON ——— */
+  .section-wrap {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 60px 40px 100px;
+  }
+  .section-header {
+    display: flex; align-items: flex-end; justify-content: space-between;
+    margin-bottom: 48px;
+    padding-bottom: 24px;
+    border-bottom: 1px solid var(--border);
+  }
+  .section-title-group {}
+  .section-eyebrow {
+    font-size: 0.7rem;
+    font-weight: 500;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 8px;
+  }
+  .section-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2rem, 4vw, 3rem);
+    font-weight: 700;
+    line-height: 1.1;
+    color: var(--text);
+  }
+  .section-count {
+    font-family: 'DM Mono', monospace;
+    font-size: 3rem;
+    font-weight: 500;
+    color: var(--border);
+    line-height: 1;
+  }
+
+  /* ——— ADD BUTTON ——— */
+  .btn-add {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: var(--gold-dim);
+    color: var(--gold);
+    border: 1px solid rgba(200,169,110,0.3);
+    padding: 10px 20px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    border-radius: var(--radius);
+    cursor: pointer;
+    transition: var(--transition);
+  }
+  .btn-add:hover { background: rgba(200,169,110,0.2); border-color: var(--gold); }
+
+  /* ——— CARDS GRID ——— */
+  .cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 24px;
+  }
+  .card {
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    transition: var(--transition);
+    position: relative;
+    animation: cardIn 0.4s ease both;
+  }
+  .card:hover { border-color: rgba(200,169,110,0.3); transform: translateY(-3px); box-shadow: var(--shadow); }
+  .card.archived { opacity: 0.45; filter: grayscale(0.6); }
+  .card-media {
+    width: 100%; height: 200px;
+    background: var(--bg2);
+    object-fit: cover;
+    display: block;
+    position: relative;
+    overflow: hidden;
+  }
+  .card-media-placeholder {
+    width: 100%; height: 200px;
+    background: linear-gradient(135deg, var(--bg2), var(--bg3));
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    gap: 10px;
+    color: var(--text3);
+    font-size: 0.78rem;
+    letter-spacing: 0.08em;
+  }
+  .media-icon {
+    width: 40px; height: 40px;
+    border: 1px solid var(--border);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .card-body { padding: 20px; }
+  .card-badge {
+    display: inline-block;
+    font-size: 0.66rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 3px 8px;
+    border-radius: 2px;
+    margin-bottom: 10px;
+  }
+  .badge-image { background: rgba(58,123,213,0.15); color: #6a9fd8; }
+  .badge-video { background: rgba(192,57,43,0.15); color: #e07060; }
+  .badge-blog { background: rgba(200,169,110,0.15); color: var(--gold); }
+  .badge-archived { background: rgba(127,140,141,0.15); color: var(--archive); }
+  .card-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 8px;
+    line-height: 1.3;
+  }
+  .card-meta {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.72rem;
+    color: var(--text3);
+    margin-bottom: 10px;
+  }
+  .card-desc {
+    font-size: 0.82rem;
+    color: var(--text2);
+    line-height: 1.7;
+    margin-bottom: 16px;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  .card-actions { display: flex; gap: 6px; padding-top: 14px; border-top: 1px solid var(--border); }
+  .action-btn {
+    flex: 1;
+    padding: 7px 0;
+    border: none;
+    border-radius: var(--radius);
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    transition: var(--transition);
+  }
+  .btn-edit { background: rgba(58,123,213,0.1); color: #6a9fd8; }
+  .btn-edit:hover { background: rgba(58,123,213,0.2); }
+  .btn-archive { background: rgba(127,140,141,0.1); color: var(--archive); }
+  .btn-archive:hover { background: rgba(127,140,141,0.2); }
+  .btn-delete { background: rgba(192,57,43,0.1); color: #e07060; }
+  .btn-delete:hover { background: rgba(192,57,43,0.2); }
+  .btn-unarchive { background: rgba(39,174,96,0.1); color: #5dbd87; }
+  .btn-unarchive:hover { background: rgba(39,174,96,0.2); }
+
+  /* ——— BLOG LIST ——— */
+  .blog-list { display: flex; flex-direction: column; gap: 20px; }
+  .blog-card {
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 32px 36px;
+    transition: var(--transition);
+    animation: cardIn 0.4s ease both;
+    position: relative;
+    overflow: hidden;
+  }
+  .blog-card::before {
+    content: '';
+    position: absolute; left: 0; top: 0; bottom: 0;
+    width: 3px;
+    background: var(--gold);
+    opacity: 0;
+    transition: var(--transition);
+  }
+  .blog-card:hover { border-color: rgba(200,169,110,0.25); }
+  .blog-card:hover::before { opacity: 1; }
+  .blog-card.archived { opacity: 0.4; }
+  .blog-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 20px; margin-bottom: 14px; }
+  .blog-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: var(--text);
+    line-height: 1.2;
+  }
+  .blog-meta { display: flex; align-items: center; gap: 16px; margin-bottom: 16px; flex-wrap: wrap; }
+  .blog-date {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.72rem;
+    color: var(--text3);
+  }
+  .blog-tag {
+    font-size: 0.68rem;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--gold);
+    background: var(--gold-dim);
+    padding: 3px 10px;
+    border-radius: 2px;
+  }
+  .blog-excerpt {
+    font-size: 0.88rem;
+    line-height: 1.85;
+    color: var(--text2);
+    margin-bottom: 20px;
+  }
+  .blog-actions { display: flex; gap: 6px; }
+
+  /* ——— FILTER BAR ——— */
+  .filter-bar {
+    display: flex; gap: 8px; margin-bottom: 32px; flex-wrap: wrap;
+  }
+  .filter-btn {
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    color: var(--text2);
+    padding: 7px 16px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.74rem;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    border-radius: 2px;
+    cursor: pointer;
+    transition: var(--transition);
+  }
+  .filter-btn:hover, .filter-btn.active { border-color: var(--gold); color: var(--gold); background: var(--gold-dim); }
+
+  /* ——— MODAL ——— */
+  .modal-overlay {
+    position: fixed; inset: 0; z-index: 2000;
+    background: rgba(0,0,0,0.75);
+    backdrop-filter: blur(6px);
+    display: flex; align-items: center; justify-content: center;
+    padding: 20px;
+    opacity: 0; pointer-events: none;
+    transition: opacity 0.25s ease;
+  }
+  .modal-overlay.open { opacity: 1; pointer-events: all; }
+  .modal {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    width: 100%; max-width: 580px;
+    max-height: 90vh;
+    overflow-y: auto;
+    transform: translateY(20px) scale(0.97);
+    transition: transform 0.25s ease;
+    position: relative;
+  }
+  .modal-overlay.open .modal { transform: translateY(0) scale(1); }
+  .modal-header {
+    padding: 28px 32px 20px;
+    border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .modal-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--text);
+  }
+  .modal-close {
+    width: 32px; height: 32px;
+    border-radius: 50%;
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    color: var(--text2);
+    font-size: 1.1rem;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    transition: var(--transition);
+  }
+  .modal-close:hover { border-color: var(--gold); color: var(--gold); }
+  .modal-body { padding: 28px 32px; }
+  .form-group { margin-bottom: 20px; }
+  .form-label {
+    display: block;
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text2);
+    margin-bottom: 8px;
+  }
+  .form-input, .form-textarea, .form-select {
+    width: 100%;
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.88rem;
+    padding: 11px 14px;
+    outline: none;
+    transition: var(--transition);
+    resize: none;
+  }
+  .form-input:focus, .form-textarea:focus, .form-select:focus {
+    border-color: var(--gold);
+    box-shadow: 0 0 0 3px rgba(200,169,110,0.08);
+  }
+  .form-textarea { min-height: 120px; line-height: 1.7; }
+  .form-select option { background: var(--bg2); }
+  .modal-footer {
+    padding: 20px 32px 28px;
+    display: flex; gap: 10px; justify-content: flex-end;
+  }
+
+  /* ——— BLOG VIEWER ——— */
+  .blog-viewer-overlay {
+    position: fixed; inset: 0; z-index: 1500;
+    background: var(--bg);
+    overflow-y: auto;
+    opacity: 0; pointer-events: none;
+    transition: opacity 0.3s ease;
+  }
+  .blog-viewer-overlay.open { opacity: 1; pointer-events: all; }
+  .blog-viewer-inner {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 100px 40px 80px;
+  }
+  .bv-back {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-size: 0.78rem;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--gold);
+    cursor: pointer;
+    margin-bottom: 48px;
+    transition: var(--transition);
+  }
+  .bv-back:hover { gap: 12px; }
+  .bv-eyebrow { font-size: 0.72rem; font-weight: 500; letter-spacing: 0.18em; text-transform: uppercase; color: var(--gold); margin-bottom: 16px; }
+  .bv-title { font-family: 'Cormorant Garamond', serif; font-size: clamp(2rem, 5vw, 3.5rem); font-weight: 700; line-height: 1.1; margin-bottom: 24px; }
+  .bv-meta { display: flex; gap: 20px; align-items: center; margin-bottom: 40px; padding-bottom: 32px; border-bottom: 1px solid var(--border); }
+  .bv-date { font-family: 'DM Mono', monospace; font-size: 0.78rem; color: var(--text3); }
+  .bv-content { font-size: 1.05rem; line-height: 1.9; color: var(--text2); white-space: pre-wrap; }
+  .bv-content p { margin-bottom: 1.5em; }
+
+  /* ——— CONFIRM DIALOG ——— */
+  .confirm-overlay {
+    position: fixed; inset: 0; z-index: 3000;
+    background: rgba(0,0,0,0.8);
+    display: flex; align-items: center; justify-content: center;
+    padding: 20px;
+    opacity: 0; pointer-events: none;
+    transition: opacity 0.2s ease;
+  }
+  .confirm-overlay.open { opacity: 1; pointer-events: all; }
+  .confirm-box {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 36px;
+    max-width: 400px;
+    width: 100%;
+    text-align: center;
+  }
+  .confirm-title { font-family: 'Cormorant Garamond', serif; font-size: 1.4rem; font-weight: 700; margin-bottom: 12px; }
+  .confirm-msg { font-size: 0.85rem; color: var(--text2); line-height: 1.7; margin-bottom: 28px; }
+  .confirm-btns { display: flex; gap: 10px; justify-content: center; }
+
+  /* ——— TOAST ——— */
+  #toast-container { position: fixed; bottom: 30px; right: 30px; z-index: 4000; display: flex; flex-direction: column; gap: 8px; }
+  .toast {
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--gold);
+    border-radius: var(--radius);
+    padding: 12px 18px;
+    font-size: 0.82rem;
+    color: var(--text);
+    box-shadow: var(--shadow);
+    animation: toastIn 0.3s ease both;
+    max-width: 280px;
+  }
+  .toast.error { border-left-color: var(--danger); }
+  .toast.success { border-left-color: var(--success); }
+
+  /* ——— EMPTY STATE ——— */
+  .empty-state {
+    text-align: center;
+    padding: 80px 20px;
+    grid-column: 1/-1;
+  }
+  .empty-icon {
+    width: 64px; height: 64px;
+    border-radius: 50%;
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 20px;
+  }
+  .empty-title { font-family: 'Cormorant Garamond', serif; font-size: 1.5rem; font-weight: 600; margin-bottom: 8px; }
+  .empty-sub { font-size: 0.82rem; color: var(--text3); }
+
+  /* ——— VIDEO THUMB ——— */
+  .video-thumb {
+    position: relative;
+    width: 100%; height: 200px;
+    background: var(--bg2);
+    overflow: hidden;
+  }
+  .video-thumb img { width: 100%; height: 100%; object-fit: cover; }
+  .play-btn {
+    position: absolute; inset: 0;
+    display: flex; align-items: center; justify-content: center;
+    background: rgba(0,0,0,0.4);
+    transition: var(--transition);
+  }
+  .play-btn:hover { background: rgba(0,0,0,0.6); }
+  .play-circle {
+    width: 48px; height: 48px;
+    border-radius: 50%;
+    background: rgba(200,169,110,0.9);
+    display: flex; align-items: center; justify-content: center;
+  }
+  .play-triangle {
+    width: 0; height: 0;
+    border-top: 9px solid transparent;
+    border-bottom: 9px solid transparent;
+    border-left: 16px solid #080b0f;
+    margin-left: 4px;
+  }
+
+  /* ——— ANIMATIONS ——— */
+  @keyframes fadeSlideUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes cardIn {
+    from { opacity: 0; transform: translateY(16px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes toastIn {
+    from { opacity: 0; transform: translateX(20px); }
+    to { opacity: 1; transform: translateX(0); }
+  }
+
+  /* ——— RESPONSIVE ——— */
+  @media (max-width: 768px) {
+    #topbar { padding: 0 20px; }
+    .logo { font-size: 1.2rem; }
+    nav button { padding: 8px 10px; font-size: 0.72rem; }
+    .hero-content { grid-template-columns: 1fr; gap: 40px; padding: 60px 20px; }
+    .section-wrap { padding: 40px 20px 80px; }
+    .cards-grid { grid-template-columns: 1fr; }
+    .blog-card { padding: 24px; }
+    .modal-header, .modal-body, .modal-footer { padding-left: 20px; padding-right: 20px; }
+    .blog-viewer-inner { padding: 80px 20px 60px; }
+    .hero-stats { gap: 20px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<header id="topbar">
+  <div class="logo" onclick="navigate('home')">PV<span>.</span></div>
+  <nav>
+    <button onclick="navigate('home')" id="nav-home" class="active">Home</button>
+    <button onclick="navigate('images')" id="nav-images">Images</button>
+    <button onclick="navigate('videos')" id="nav-videos">Videos</button>
+    <button onclick="navigate('blog')" id="nav-blog">Vlog</button>
+  </nav>
+</header>
+
+<!-- ============ HOME PAGE ============ -->
+<div id="page-home" class="page active">
+  <section id="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-grid"></div>
+    <div class="hero-content">
+      <div class="hero-left">
+        <div class="hero-tag">Welcome to my space</div>
+        <h1 class="hero-name">
+          Pragnesh
+          <em>Vaghela</em>
+        </h1>
+        <p class="hero-bio">
+          Creative professional, storyteller, and lifelong learner. I document my journey through images, videos, and written thoughts — one moment at a time.
+        </p>
+        <div class="hero-stats" id="hero-stats">
+          <div class="stat-item">
+            <div class="stat-num" id="stat-images">0</div>
+            <div class="stat-label">Photos</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-num" id="stat-videos">0</div>
+            <div class="stat-label">Videos</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-num" id="stat-blogs">0</div>
+            <div class="stat-label">Stories</div>
+          </div>
+        </div>
+        <div class="hero-cta">
+          <button class="btn-primary" onclick="navigate('blog')">Read My Vlog</button>
+          <button class="btn-outline" onclick="navigate('images')">View Gallery</button>
+        </div>
+      </div>
+      <div class="hero-right">
+        <div class="profile-card">
+          <div class="profile-avatar">PV</div>
+          <div class="profile-name">Pragnesh Vaghela</div>
+          <div class="profile-title">Creator / Storyteller / Explorer</div>
+          <div class="profile-divider"></div>
+          <div class="profile-detail"><span class="profile-detail-dot"></span>Based in India</div>
+          <div class="profile-detail"><span class="profile-detail-dot"></span>Passionate about Photography</div>
+          <div class="profile-detail"><span class="profile-detail-dot"></span>Avid Traveller and Blogger</div>
+          <div class="profile-detail"><span class="profile-detail-dot"></span>Technology Enthusiast</div>
+          <div class="profile-detail"><span class="profile-detail-dot"></span>Lifelong Learner</div>
+          <div class="profile-divider"></div>
+          <div class="profile-detail" style="font-size:0.78rem; color: var(--text3);">
+            <span class="profile-detail-dot" style="background:var(--success);"></span>
+            Available for collaborations
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ============ IMAGES PAGE ============ -->
+<div id="page-images" class="page">
+  <div class="section-wrap">
+    <div class="section-header">
+      <div class="section-title-group">
+        <div class="section-eyebrow">Visual Stories</div>
+        <h2 class="section-title">My Gallery</h2>
+      </div>
+      <button class="btn-add" onclick="openModal('image')">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 1v12M1 7h12" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        Add Photo
+      </button>
+    </div>
+    <div class="filter-bar" id="img-filter">
+      <button class="filter-btn active" onclick="setFilter('images','all',this)">All</button>
+      <button class="filter-btn" onclick="setFilter('images','active',this)">Active</button>
+      <button class="filter-btn" onclick="setFilter('images','archived',this)">Archived</button>
+    </div>
+    <div class="cards-grid" id="images-grid"></div>
+  </div>
+</div>
+
+<!-- ============ VIDEOS PAGE ============ -->
+<div id="page-videos" class="page">
+  <div class="section-wrap">
+    <div class="section-header">
+      <div class="section-title-group">
+        <div class="section-eyebrow">Motion Stories</div>
+        <h2 class="section-title">My Videos</h2>
+      </div>
+      <button class="btn-add" onclick="openModal('video')">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 1v12M1 7h12" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        Add Video
+      </button>
+    </div>
+    <div class="filter-bar" id="vid-filter">
+      <button class="filter-btn active" onclick="setFilter('videos','all',this)">All</button>
+      <button class="filter-btn" onclick="setFilter('videos','active',this)">Active</button>
+      <button class="filter-btn" onclick="setFilter('videos','archived',this)">Archived</button>
+    </div>
+    <div class="cards-grid" id="videos-grid"></div>
+  </div>
+</div>
+
+<!-- ============ BLOG PAGE ============ -->
+<div id="page-blog" class="page">
+  <div class="section-wrap">
+    <div class="section-header">
+      <div class="section-title-group">
+        <div class="section-eyebrow">Personal Chronicles</div>
+        <h2 class="section-title">My Vlog</h2>
+      </div>
+      <button class="btn-add" onclick="openModal('blog')">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 1v12M1 7h12" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        Write Story
+      </button>
+    </div>
+    <div class="filter-bar" id="blog-filter">
+      <button class="filter-btn active" onclick="setFilter('blog','all',this)">All</button>
+      <button class="filter-btn" onclick="setFilter('blog','active',this)">Active</button>
+      <button class="filter-btn" onclick="setFilter('blog','archived',this)">Archived</button>
+    </div>
+    <div class="blog-list" id="blog-list"></div>
+  </div>
+</div>
+
+<!-- ============ MODAL ============ -->
+<div class="modal-overlay" id="modal-overlay">
+  <div class="modal" id="modal">
+    <div class="modal-header">
+      <div class="modal-title" id="modal-title">Add Content</div>
+      <button class="modal-close" onclick="closeModal()">x</button>
+    </div>
+    <div class="modal-body" id="modal-body"></div>
+    <div class="modal-footer">
+      <button class="btn-outline" onclick="closeModal()">Cancel</button>
+      <button class="btn-primary" onclick="saveModal()">Save</button>
+    </div>
+  </div>
+</div>
+
+<!-- ============ CONFIRM DIALOG ============ -->
+<div class="confirm-overlay" id="confirm-overlay">
+  <div class="confirm-box">
+    <div class="confirm-title" id="confirm-title">Are you sure?</div>
+    <div class="confirm-msg" id="confirm-msg">This action cannot be undone.</div>
+    <div class="confirm-btns">
+      <button class="btn-outline" onclick="closeConfirm()">Cancel</button>
+      <button class="btn-primary" id="confirm-ok" style="background:var(--danger);color:#fff;">Delete</button>
+    </div>
+  </div>
+</div>
+
+<!-- ============ BLOG VIEWER ============ -->
+<div class="blog-viewer-overlay" id="blog-viewer">
+  <div class="blog-viewer-inner">
+    <div class="bv-back" onclick="closeBlogViewer()">
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M9 2L3 7l6 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      Back to Vlog
+    </div>
+    <div class="bv-eyebrow" id="bv-tag"></div>
+    <h1 class="bv-title" id="bv-title"></h1>
+    <div class="bv-meta">
+      <span class="bv-date" id="bv-date"></span>
+    </div>
+    <div class="bv-content" id="bv-content"></div>
+  </div>
+</div>
+
+<!-- ============ TOAST CONTAINER ============ -->
+<div id="toast-container"></div>
+
+<script>
+// ——— STATE ———
+const DB = {
+  images: JSON.parse(localStorage.getItem('pv_images') || '[]'),
+  videos: JSON.parse(localStorage.getItem('pv_videos') || '[]'),
+  blog:   JSON.parse(localStorage.getItem('pv_blog')   || '[]'),
+};
+
+function save(key) {
+  localStorage.setItem('pv_' + key, JSON.stringify(DB[key]));
+}
+
+let modalType = null;
+let editId = null;
+let filterState = { images: 'all', videos: 'all', blog: 'all' };
+let confirmCb = null;
+
+// ——— NAVIGATION ———
+function navigate(page) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('nav button').forEach(b => b.classList.remove('active'));
+  document.getElementById('page-' + page).classList.add('active');
+  document.getElementById('nav-' + page).classList.add('active');
+  if (page === 'images') renderImages();
+  if (page === 'videos') renderVideos();
+  if (page === 'blog') renderBlog();
+  if (page === 'home') updateStats();
+  window.scrollTo(0,0);
+}
+
+// ——— STATS ———
+function updateStats() {
+  document.getElementById('stat-images').textContent = DB.images.filter(i=>!i.archived).length;
+  document.getElementById('stat-videos').textContent = DB.videos.filter(i=>!i.archived).length;
+  document.getElementById('stat-blogs').textContent = DB.blog.filter(i=>!i.archived).length;
+}
+updateStats();
+
+// ——— FILTER ———
+function setFilter(type, val, btn) {
+  filterState[type] = val;
+  const bar = document.getElementById(type === 'blog' ? 'blog-filter' : type.slice(0,-1) + '-filter') ||
+               document.getElementById(type + '-filter');
+  const bars = { images: 'img-filter', videos: 'vid-filter', blog: 'blog-filter' };
+  document.querySelectorAll('#' + bars[type] + ' .filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  if (type === 'images') renderImages();
+  if (type === 'videos') renderVideos();
+  if (type === 'blog') renderBlog();
+}
+
+// ——— RENDER IMAGES ———
+function renderImages() {
+  const grid = document.getElementById('images-grid');
+  const f = filterState.images;
+  let items = DB.images.filter(i => f === 'all' ? true : f === 'archived' ? i.archived : !i.archived);
+  if (!items.length) {
+    grid.innerHTML = `<div class="empty-state">
+      <div class="empty-icon"><svg width="24" height="24" fill="none" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2" stroke="#4a5a6a" stroke-width="1.5"/><circle cx="8.5" cy="8.5" r="1.5" stroke="#4a5a6a" stroke-width="1.5"/><path d="M21 15l-5-5L5 21" stroke="#4a5a6a" stroke-width="1.5" stroke-linecap="round"/></svg></div>
+      <div class="empty-title">No photos yet</div>
+      <div class="empty-sub">Add your first photo to the gallery.</div>
+    </div>`;
+    return;
+  }
+  grid.innerHTML = items.map(item => `
+    <div class="card ${item.archived ? 'archived' : ''}" id="icard-${item.id}">
+      ${item.url
+        ? `<img class="card-media" src="${item.url}" alt="${item.title}" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" /><div class="card-media-placeholder" style="display:none"><div class="media-icon"><svg width="20" height="20" fill="none" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2" stroke="#4a5a6a" stroke-width="1.5"/></svg></div><span>Image preview</span></div>`
+        : `<div class="card-media-placeholder"><div class="media-icon"><svg width="20" height="20" fill="none" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2" stroke="#4a5a6a" stroke-width="1.5"/><circle cx="8.5" cy="8.5" r="1.5" stroke="#4a5a6a" stroke-width="1.5"/><path d="M21 15l-5-5L5 21" stroke="#4a5a6a" stroke-width="1.5" stroke-linecap="round"/></svg></div><span>No image URL</span></div>`
+      }
+      <div class="card-body">
+        <span class="card-badge ${item.archived ? 'badge-archived' : 'badge-image'}">${item.archived ? 'Archived' : 'Photo'}</span>
+        <div class="card-title">${item.title}</div>
+        <div class="card-meta">${formatDate(item.date)}</div>
+        ${item.desc ? `<div class="card-desc">${item.desc}</div>` : ''}
+        <div class="card-actions">
+          <button class="action-btn btn-edit" onclick="editItem('image','${item.id}')">Edit</button>
+          ${item.archived
+            ? `<button class="action-btn btn-unarchive" onclick="toggleArchive('images','${item.id}')">Restore</button>`
+            : `<button class="action-btn btn-archive" onclick="toggleArchive('images','${item.id}')">Archive</button>`
+          }
+          <button class="action-btn btn-delete" onclick="deleteItem('images','${item.id}')">Delete</button>
+        </div>
+      </div>
+    </div>
+  `).join('');
+}
+
+// ——— RENDER VIDEOS ———
+function renderVideos() {
+  const grid = document.getElementById('videos-grid');
+  const f = filterState.videos;
+  let items = DB.videos.filter(i => f === 'all' ? true : f === 'archived' ? i.archived : !i.archived);
+  if (!items.length) {
+    grid.innerHTML = `<div class="empty-state">
+      <div class="empty-icon"><svg width="24" height="24" fill="none" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2" stroke="#4a5a6a" stroke-width="1.5"/><path d="M10 9l5 3-5 3V9z" stroke="#4a5a6a" stroke-width="1.5" stroke-linejoin="round"/></svg></div>
+      <div class="empty-title">No videos yet</div>
+      <div class="empty-sub">Add your first video to the collection.</div>
+    </div>`;
+    return;
+  }
+  grid.innerHTML = items.map(item => {
+    const ytId = getYouTubeId(item.url);
+    const thumb = ytId ? `https://img.youtube.com/vi/${ytId}/hqdefault.jpg` : '';
+    return `
+    <div class="card ${item.archived ? 'archived' : ''}" id="vcard-${item.id}">
+      <div class="video-thumb">
+        ${thumb ? `<img src="${thumb}" alt="${item.title}" style="width:100%;height:100%;object-fit:cover" />` : '<div style="width:100%;height:100%;background:var(--bg2);"></div>'}
+        <div class="play-btn" onclick="${ytId ? `window.open('https://youtu.be/${ytId}','_blank')` : item.url ? `window.open('${item.url}','_blank')` : ''}">
+          <div class="play-circle"><div class="play-triangle"></div></div>
+        </div>
+      </div>
+      <div class="card-body">
+        <span class="card-badge ${item.archived ? 'badge-archived' : 'badge-video'}">${item.archived ? 'Archived' : 'Video'}</span>
+        <div class="card-title">${item.title}</div>
+        <div class="card-meta">${formatDate(item.date)}</div>
+        ${item.desc ? `<div class="card-desc">${item.desc}</div>` : ''}
+        <div class="card-actions">
+          <button class="action-btn btn-edit" onclick="editItem('video','${item.id}')">Edit</button>
+          ${item.archived
+            ? `<button class="action-btn btn-unarchive" onclick="toggleArchive('videos','${item.id}')">Restore</button>`
+            : `<button class="action-btn btn-archive" onclick="toggleArchive('videos','${item.id}')">Archive</button>`
+          }
+          <button class="action-btn btn-delete" onclick="deleteItem('videos','${item.id}')">Delete</button>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+// ——— RENDER BLOG ———
+function renderBlog() {
+  const list = document.getElementById('blog-list');
+  const f = filterState.blog;
+  let items = DB.blog.filter(i => f === 'all' ? true : f === 'archived' ? i.archived : !i.archived);
+  items = [...items].sort((a,b) => new Date(b.date) - new Date(a.date));
+  if (!items.length) {
+    list.innerHTML = `<div class="empty-state" style="grid-column:unset">
+      <div class="empty-icon"><svg width="24" height="24" fill="none" viewBox="0 0 24 24"><path d="M4 4h16v2H4zM4 8h12v2H4zM4 12h10v2H4zM4 16h8v2H4z" fill="#4a5a6a"/></svg></div>
+      <div class="empty-title">No stories yet</div>
+      <div class="empty-sub">Write your first vlog entry.</div>
+    </div>`;
+    return;
+  }
+  list.innerHTML = items.map(item => `
+    <div class="blog-card ${item.archived ? 'archived' : ''}" id="bcard-${item.id}">
+      <div class="blog-header">
+        <div class="blog-title" style="cursor:pointer" onclick="viewBlog('${item.id}')">${item.title}</div>
+        ${item.archived ? `<span class="card-badge badge-archived">Archived</span>` : ''}
+      </div>
+      <div class="blog-meta">
+        <span class="blog-date">${formatDate(item.date)}</span>
+        ${item.tag ? `<span class="blog-tag">${item.tag}</span>` : ''}
+      </div>
+      <div class="blog-excerpt">${truncate(item.content, 220)}</div>
+      <div class="blog-actions">
+        <button class="action-btn btn-edit" onclick="editItem('blog','${item.id}')">Edit</button>
+        ${item.archived
+          ? `<button class="action-btn btn-unarchive" onclick="toggleArchive('blog','${item.id}')">Restore</button>`
+          : `<button class="action-btn btn-archive" onclick="toggleArchive('blog','${item.id}')">Archive</button>`
+        }
+        <button class="action-btn btn-delete" onclick="deleteItem('blog','${item.id}')">Delete</button>
+        <button class="action-btn btn-edit" style="background:var(--gold-dim);color:var(--gold)" onclick="viewBlog('${item.id}')">Read</button>
+      </div>
+    </div>
+  `).join('');
+}
+
+// ——— MODAL ———
+function openModal(type, id) {
+  modalType = type;
+  editId = id || null;
+  const overlay = document.getElementById('modal-overlay');
+  const body = document.getElementById('modal-body');
+  const title = document.getElementById('modal-title');
+
+  if (type === 'image') {
+    const item = id ? DB.images.find(i=>i.id===id) : null;
+    title.textContent = id ? 'Edit Photo' : 'Add Photo';
+    body.innerHTML = `
+      <div class="form-group"><label class="form-label">Title *</label><input class="form-input" id="f-title" placeholder="Photo title" value="${item ? escHtml(item.title) : ''}" /></div>
+      <div class="form-group"><label class="form-label">Image URL</label><input class="form-input" id="f-url" placeholder="https://..." value="${item ? escHtml(item.url||'') : ''}" /></div>
+      <div class="form-group"><label class="form-label">Description</label><textarea class="form-textarea" id="f-desc" placeholder="Tell the story behind this photo...">${item ? escHtml(item.desc||'') : ''}</textarea></div>
+    `;
+  } else if (type === 'video') {
+    const item = id ? DB.videos.find(i=>i.id===id) : null;
+    title.textContent = id ? 'Edit Video' : 'Add Video';
+    body.innerHTML = `
+      <div class="form-group"><label class="form-label">Title *</label><input class="form-input" id="f-title" placeholder="Video title" value="${item ? escHtml(item.title) : ''}" /></div>
+      <div class="form-group"><label class="form-label">Video URL (YouTube or direct)</label><input class="form-input" id="f-url" placeholder="https://youtube.com/watch?v=..." value="${item ? escHtml(item.url||'') : ''}" /></div>
+      <div class="form-group"><label class="form-label">Description</label><textarea class="form-textarea" id="f-desc" placeholder="About this video...">${item ? escHtml(item.desc||'') : ''}</textarea></div>
+    `;
+  } else if (type === 'blog') {
+    const item = id ? DB.blog.find(i=>i.id===id) : null;
+    title.textContent = id ? 'Edit Story' : 'Write a Story';
+    body.innerHTML = `
+      <div class="form-group"><label class="form-label">Title *</label><input class="form-input" id="f-title" placeholder="Your story title" value="${item ? escHtml(item.title) : ''}" /></div>
+      <div class="form-group"><label class="form-label">Category / Tag</label><input class="form-input" id="f-tag" placeholder="e.g. Travel, Life, Tech" value="${item ? escHtml(item.tag||'') : ''}" /></div>
+      <div class="form-group"><label class="form-label">Content *</label><textarea class="form-textarea" id="f-content" style="min-height:220px" placeholder="Write your story here...">${item ? escHtml(item.content||'') : ''}</textarea></div>
+    `;
+  }
+
+  overlay.classList.add('open');
+  setTimeout(() => { const f = document.getElementById('f-title'); if(f) f.focus(); }, 200);
+}
+
+function closeModal() {
+  document.getElementById('modal-overlay').classList.remove('open');
+  modalType = null; editId = null;
+}
+
+function saveModal() {
+  const titleEl = document.getElementById('f-title');
+  if (!titleEl || !titleEl.value.trim()) { showToast('Title is required.', 'error'); return; }
+
+  if (modalType === 'image') {
+    const obj = {
+      id: editId || uid(),
+      title: titleEl.value.trim(),
+      url: (document.getElementById('f-url')||{}).value || '',
+      desc: (document.getElementById('f-desc')||{}).value || '',
+      date: new Date().toISOString(),
+      archived: false,
+    };
+    if (editId) {
+      const idx = DB.images.findIndex(i=>i.id===editId);
+      obj.archived = DB.images[idx].archived;
+      obj.date = DB.images[idx].date;
+      DB.images[idx] = obj;
+    } else {
+      DB.images.unshift(obj);
+    }
+    save('images');
+    renderImages();
+  } else if (modalType === 'video') {
+    const obj = {
+      id: editId || uid(),
+      title: titleEl.value.trim(),
+      url: (document.getElementById('f-url')||{}).value || '',
+      desc: (document.getElementById('f-desc')||{}).value || '',
+      date: new Date().toISOString(),
+      archived: false,
+    };
+    if (editId) {
+      const idx = DB.videos.findIndex(i=>i.id===editId);
+      obj.archived = DB.videos[idx].archived;
+      obj.date = DB.videos[idx].date;
+      DB.videos[idx] = obj;
+    } else {
+      DB.videos.unshift(obj);
+    }
+    save('videos');
+    renderVideos();
+  } else if (modalType === 'blog') {
+    const contentEl = document.getElementById('f-content');
+    if (!contentEl.value.trim()) { showToast('Content is required.', 'error'); return; }
+    const obj = {
+      id: editId || uid(),
+      title: titleEl.value.trim(),
+      tag: (document.getElementById('f-tag')||{}).value || '',
+      content: contentEl.value.trim(),
+      date: editId ? DB.blog.find(i=>i.id===editId).date : new Date().toISOString(),
+      archived: false,
+    };
+    if (editId) {
+      const idx = DB.blog.findIndex(i=>i.id===editId);
+      obj.archived = DB.blog[idx].archived;
+      DB.blog[idx] = obj;
+    } else {
+      DB.blog.unshift(obj);
+    }
+    save('blog');
+    renderBlog();
+  }
+
+  updateStats();
+  closeModal();
+  showToast(editId ? 'Updated successfully!' : 'Added successfully!', 'success');
+}
+
+function editItem(type, id) {
+  openModal(type, id);
+}
+
+// ——— DELETE / ARCHIVE ———
+function deleteItem(collection, id) {
+  showConfirm(
+    'Delete this item?',
+    'This will permanently remove the item. This action cannot be undone.',
+    () => {
+      DB[collection] = DB[collection].filter(i=>i.id!==id);
+      save(collection);
+      if (collection === 'images') renderImages();
+      if (collection === 'videos') renderVideos();
+      if (collection === 'blog') renderBlog();
+      updateStats();
+      showToast('Deleted.', 'success');
+    }
+  );
+}
+
+function toggleArchive(collection, id) {
+  const item = DB[collection].find(i=>i.id===id);
+  if (!item) return;
+  item.archived = !item.archived;
+  save(collection);
+  if (collection === 'images') renderImages();
+  if (collection === 'videos') renderVideos();
+  if (collection === 'blog') renderBlog();
+  updateStats();
+  showToast(item.archived ? 'Archived.' : 'Restored.', 'success');
+}
+
+// ——— BLOG VIEWER ———
+function viewBlog(id) {
+  const item = DB.blog.find(i=>i.id===id);
+  if (!item) return;
+  document.getElementById('bv-title').textContent = item.title;
+  document.getElementById('bv-tag').textContent = item.tag || 'Personal';
+  document.getElementById('bv-date').textContent = formatDate(item.date);
+  document.getElementById('bv-content').textContent = item.content;
+  document.getElementById('blog-viewer').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeBlogViewer() {
+  document.getElementById('blog-viewer').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+// ——— CONFIRM ———
+function showConfirm(title, msg, cb) {
+  document.getElementById('confirm-title').textContent = title;
+  document.getElementById('confirm-msg').textContent = msg;
+  document.getElementById('confirm-ok').onclick = () => { closeConfirm(); cb(); };
+  document.getElementById('confirm-overlay').classList.add('open');
+}
+function closeConfirm() {
+  document.getElementById('confirm-overlay').classList.remove('open');
+}
+
+// ——— TOAST ———
+function showToast(msg, type) {
+  const c = document.getElementById('toast-container');
+  const t = document.createElement('div');
+  t.className = 'toast ' + (type||'');
+  t.textContent = msg;
+  c.appendChild(t);
+  setTimeout(() => { t.style.opacity='0'; t.style.transform='translateX(20px)'; t.style.transition='0.3s ease'; setTimeout(()=>t.remove(), 300); }, 2500);
+}
+
+// ——— HELPERS ———
+function uid() { return Date.now().toString(36) + Math.random().toString(36).slice(2,7); }
+function formatDate(iso) {
+  const d = new Date(iso);
+  return d.toLocaleDateString('en-GB', { day:'2-digit', month:'short', year:'numeric' });
+}
+function truncate(str, n) { return str && str.length > n ? str.slice(0,n).trimEnd() + '...' : str; }
+function escHtml(s) { return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+function getYouTubeId(url) {
+  if (!url) return null;
+  const m = url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/)([a-zA-Z0-9_-]{11})/);
+  return m ? m[1] : null;
+}
+
+// ——— CLOSE MODAL ON OVERLAY CLICK ———
+document.getElementById('modal-overlay').addEventListener('click', function(e) {
+  if (e.target === this) closeModal();
+});
+document.getElementById('confirm-overlay').addEventListener('click', function(e) {
+  if (e.target === this) closeConfirm();
+});
+
+// ——— KEYBOARD ———
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') { closeModal(); closeConfirm(); closeBlogViewer(); }
+});
+
+// ——— SEED SAMPLE DATA (first visit) ———
+if (!localStorage.getItem('pv_seeded')) {
+  DB.images.push(
+    { id: uid(), title: 'Golden Hour in Ahmedabad', url: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=600', desc: 'That magical hour when the city glows in amber light. Shot from the rooftop of my childhood home.', date: new Date(Date.now()-5*86400000).toISOString(), archived: false },
+    { id: uid(), title: 'Monsoon Reflections', url: 'https://images.unsplash.com/photo-1534430480872-3498386e7856?w=600', desc: 'The first rain after a long summer. The streets came alive with colour and life.', date: new Date(Date.now()-12*86400000).toISOString(), archived: false }
+  );
+  DB.videos.push(
+    { id: uid(), title: 'Travel Diary: Rann of Kutch', url: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ', desc: 'A cinematic short film capturing the vast white desert of Kutch during the festival season.', date: new Date(Date.now()-8*86400000).toISOString(), archived: false },
+    { id: uid(), title: 'Street Food Walk: Old Ahmedabad', url: '', desc: 'Exploring the narrow lanes of the walled city and tasting the best street food Gujarat has to offer.', date: new Date(Date.now()-20*86400000).toISOString(), archived: false }
+  );
+  DB.blog.push(
+    { id: uid(), title: 'Why I Started Documenting My Life', tag: 'Personal', content: 'Three years ago, I picked up a camera for the first time. Not because I had dreams of being a photographer, but because I was afraid of forgetting.\n\nMemory is a funny thing. The moments that feel the most vivid — the ones you swear you will never forget — are often the first to fade. The smell of rain on hot asphalt. The exact way the light fell on a familiar face. The feeling of arriving somewhere new for the first time.\n\nSo I started documenting. First photos, then videos, then words. And somewhere along the way, it became less about preserving the past and more about fully inhabiting the present.\n\nThis website is my archive and my notebook. Welcome to my world.', date: new Date(Date.now()-3*86400000).toISOString(), archived: false },
+    { id: uid(), title: 'The Art of Slow Travel', tag: 'Travel', content: 'We live in an age of speed. Five countries in five days. Hit every landmark, tick every box, post every photo. But something gets lost in the blur.\n\nSlow travel is different. It means staying long enough in a place to know which bakery opens earliest. To have a favourite table at a local chai shop. To notice how the light changes through the day in a new city.\n\nMy best travel memories are never from the famous spots. They are from the in-between moments — a conversation with a stranger, a wrong turn that led somewhere beautiful, an evening watching daily life unfold from a quiet corner.', date: new Date(Date.now()-10*86400000).toISOString(), archived: false }
+  );
+  save('images'); save('videos'); save('blog');
+  localStorage.setItem('pv_seeded', '1');
+}
+
+updateStats();
+</script>
+</body>
+</html>
